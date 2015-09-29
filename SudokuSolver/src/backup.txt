@@ -1,0 +1,39 @@
+
+	private static void test3() {
+		int[][] board = new int[9][9];
+		printBoard(board);
+		boolean canT = true;
+		int iter = 0;
+		BitSet bs = new BitSet(9);
+		while(canT) {
+			canT = false;
+			for(int i=0;i<9;++i) { 
+				for(int j = 0; j<9; ++j) if(board[i][j] == 0){
+					bs.clear();
+					for(int k = 0; k<9; ++k) {
+						if(board[i][k] != 0)
+							bs.set(board[i][k]);
+						if(board[k][j] != 0)
+							bs.set(board[k][j]);
+					}
+
+					int qr = i/3 , qc = j/3;
+					for(int k=0; k<3;++k)
+						for(int l =0; l<3; ++l)
+							if(board[qr*3 + k][qc*3 + l] != 0)
+								bs.set(board[qr*3 + k][qc*3 + l]);
+
+					int cnt = 0 , last = -1;
+					if(bs.cardinality() == 8) {
+						int num = bs.nextClearBit(0) + 1;
+						board[i][j] = num;
+						canT = true;
+					}
+				}	
+			}
+			++iter;
+		}
+		System.out.println("iterations " + iter);
+		printBoard(board);
+	}
+
